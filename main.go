@@ -7,7 +7,11 @@ import (
 )
 
 func main() {
-	start(100, 5)
+	var N = 25
+
+	for i := 1; i <= N; i++ {
+		start(1_000_000, i)
+	}
 }
 
 func start(length, times int) {
@@ -21,7 +25,7 @@ func start(length, times int) {
 		arr = append(arr, elem)
 	}
 	
-	fmt.Printf("%v\n\n", arr)
+	// fmt.Printf("\n%v\n\n", arr)
 	
 	var timeParts = []time.Time {}
 
@@ -39,7 +43,7 @@ func start(length, times int) {
 		var part = arr[startPos : endPos]
 		go calculate(part, i + 1, times, quit)
 	}
-	getTime(quit, timeParts, startTime)
+	getTime(quit, timeParts, startTime, times)
 }
 
 func calculate(arr []int, index int, times int, quit chan int) {
@@ -54,21 +58,21 @@ func calculate(arr []int, index int, times int, quit chan int) {
 	}
 }
 
-func getTime(quit chan int, timeParts []time.Time, startTime time.Time) {
+func getTime(quit chan int, timeParts []time.Time, startTime time.Time, times int) {
 	for {
 		select {
 			case <-quit:
 				fmt.Println("------------------------------")
 
-				for i := 0; i < len(timeParts); i++ {
-					finishTimePart := time.Now()
-					diffPart := finishTimePart.Sub(timeParts[i]).String()
-					fmt.Printf("(%d) Time elapsed: %s\n", i + 1, diffPart)	
-				}
+				// for i := 0; i < len(timeParts); i++ {
+				// 	finishTimePart := time.Now()
+				// 	diffPart := finishTimePart.Sub(timeParts[i]).String()
+				// 	fmt.Printf("(%d) Time elapsed: %s\n", i + 1, diffPart)	
+				// }
 
 				finishTime := time.Now()
 				diff := finishTime.Sub(startTime).String()
-				fmt.Printf("(*) Time elapsed: %s\n", diff)
+				fmt.Printf("(%d) Time elapsed: %s\n", times, diff)
 				return
 			default:
 				break
